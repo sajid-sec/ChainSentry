@@ -1,0 +1,16 @@
+certifi==2026.6.17
+charset-normalizer==3.4.7
+idna==3.18
+iniconfig==2.3.0
+Levenshtein==0.27.3
+markdown-it-py==4.2.0
+mdurl==0.1.2
+packaging==26.2
+pluggy==1.6.0
+Pygments==2.20.0
+pytest==9.1.1
+python-Levenshtein==0.27.3
+RapidFuzz==3.14.5
+requests==2.34.2
+rich==15.0.0
+urllib3==2.7.0
