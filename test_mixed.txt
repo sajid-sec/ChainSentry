@@ -1,0 +1,5 @@
+requests==2.31.0
+flask>=2.0.0
+numpy~=1.26.0
+django<=4.2.0
+click
