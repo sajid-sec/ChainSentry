@@ -1,7 +1,9 @@
 import argparse
 from rich.console import Console
 from rich.table import Table
+from rich.text import Text
 from auditor.parser import parse_requirements
+from auditor.cve_checker import check_cve
 
 console = Console()
 
@@ -18,9 +20,22 @@ def main():
     table = Table(title="Dependency Scan")
     table.add_column("Package", style="cyan")
     table.add_column("Version", style="white")
+    table.add_column("CVEs", style="white")
 
     for p in packages:
-        table.add_row(p["name"], p["version"] or "unpinned")
+        console.print(f"Checking {p['name']}...", end="\r")
+        cves = check_cve(p["name"], p["version"])
+
+        if isinstance(cves, list) and cves:
+            cve_cell = Text(str(len(cves)), style="red")
+        elif cves == "UNVERIFIED":
+            cve_cell = Text("UNVERIFIED", style="yellow")
+        elif cves == "ERROR":
+            cve_cell = Text("ERROR", style="yellow")
+        else:
+            cve_cell = Text("0", style="green")
+
+        table.add_row(p["name"], p["version"] or "unpinned", cve_cell)
 
     console.print(table)
 
