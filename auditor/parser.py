@@ -1,15 +1,31 @@
+import re
+
 def parse_requirements(filepath):
     packages = []
     with open(filepath) as f:
         for line in f:
             line = line.strip()
+
             if not line or line.startswith("#"):
                 continue
-            for sep in ["==", ">=", "~=", "<="]:
+            if line.startswith("-"):
+                continue
+            if not re.match(r'^[A-Za-z0-9]', line):
+                continue
+
+            found = False
+            # Check >= ~= <= BEFORE == to avoid matching == inside markers
+            for sep in [">=", "~=", "<=", "=="]:
                 if sep in line:
-                    name, version = line.split(sep)
-                    packages.append({"name": name.strip(), "version": version.strip()})
+                    name, rest = line.split(sep, 1)
+                    version = rest.split(";")[0].split(",")[0].strip()
+                    packages.append({"name": name.strip(), "version": version})
+                    found = True
                     break
-            else:
-                packages.append({"name": line, "version": None})
+
+            if not found:
+                clean = line.split(";")[0].strip()
+                if re.match(r'^[A-Za-z0-9][A-Za-z0-9._-]*$', clean):
+                    packages.append({"name": clean, "version": None})
+
     return packages
