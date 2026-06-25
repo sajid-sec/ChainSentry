@@ -68,14 +68,22 @@ Priority: typosquatting overrides everything, then CVEs, then staleness.
 Unpinned packages are always `MEDIUM` — CVEs can't be verified without a fixed version.
 
 ---
-
 ## Limitations
 
-- **Direct dependencies only** — transitive (nested) dependencies are not scanned
-- **Curated reference list** — typosquatting checks ~143 well-known packages, not all of PyPI
-- **Short names excluded** — names under 6 characters skipped to avoid false positives
-- **OSV.dev coverage** — a clean result means no known OSV-tracked CVEs, not zero vulnerabilities
-- **Environment markers stripped** — platform conditions like `; sys_platform == 'win32'` are ignored
+- **Direct dependencies only** — transitive (nested) dependencies are not scanned.
+  If `requests` depends on a vulnerable version of `urllib3`, ChainSentry won't catch it.
+
+- **Curated reference list** — typosquatting checks against ~143 well-known packages,
+  not all of PyPI. A typosquat targeting an obscure package won't be detected.
+
+- **Short names excluded** — package names under 6 characters are skipped entirely.
+  Levenshtein distance on short strings produces too many false positives to be useful.
+
+- **OSV.dev coverage** — not every CVE is tracked by OSV. A `0 CVEs` result means
+  no known OSV-tracked vulnerabilities, not that the package is vulnerability-free.
+
+- **Environment markers stripped** — specifiers like `requests>=2.0; sys_platform == 'win32'`
+  are parsed, but the platform condition is ignored. The version is scanned as written.
 
 ---
 
