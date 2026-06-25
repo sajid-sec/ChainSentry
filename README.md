@@ -44,16 +44,17 @@ python main.py --file requirements.txt --output report.json
 
 **Sample output:**
 
+```
 ChainSentry — Dependency Scan
-Package   Version   CVEs   Typosquatting   Last Updated   Riskdjango    4.2.0     82     clean           20d            HIGH
 
-flask     2.0.0     3      clean           125d           HIGH
+ Package   Version   CVEs   Typosquatting   Last Updated   Risk
+ django    4.2.0     82     clean           20d            HIGH
+ flask     2.0.0     3      clean           125d           HIGH
+ numpy     1.26.0    0      clean           2d             LOW
+ click     unpinned  UNVE   clean           33d            MEDIUM
 
-numpy     1.26.0    0      clean           2d             LOW
-
-click     unpinned  UNVE   clean           33d            MEDIUM
 Scanned 4 packages — 2 HIGH, 1 MEDIUM, 1 LOW
----
+```
 
 ## How scoring works
 
